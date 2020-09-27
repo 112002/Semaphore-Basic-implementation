@@ -73,3 +73,8 @@ int main (int argc, char **argv)
         if (!semval) break;
         sleep (1);
     }
+ // terminate spooler
+    if ((r = pthread_cancel (tid_spooler)) != 0) {
+        fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
+    }
+    
