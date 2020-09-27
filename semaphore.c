@@ -65,3 +65,11 @@ int main (int argc, char **argv)
             fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
         }
     
+  // No more strings to print? Wait for spool_signal_sem to become 0
+    int semval;
+    while (1) {
+        if (sem_getvalue (spool_signal_sem, &semval)== -1)
+            perror ("sem_getvalue");
+        if (!semval) break;
+        sleep (1);
+    }
