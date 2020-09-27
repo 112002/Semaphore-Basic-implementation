@@ -50,3 +50,12 @@ int main (int argc, char **argv)
     if ((r = pthread_create (&tid_spooler, NULL, spooler, NULL)) != 0) {
         fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
     }
+
+     // Create 10 producer threads
+    int thread_no [10];
+    for (i = 0; i < 10; i++) {
+        thread_no [i] = i;
+        if ((r = pthread_create (&tid_producer [i], NULL, producer, (void *) &thread_no [i])) != 0) {
+            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
+        }
+    }
