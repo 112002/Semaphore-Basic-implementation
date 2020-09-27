@@ -127,3 +127,14 @@ void *producer (void *arg)
 	    perror ("sem_post: mutex_sem"); exit (1);
         }
     
+// Produce a string
+        sprintf (buf [j], "Thread %d: %d\n", my_id, ++count);
+	// Tell spooler that there is a string to print: V (spool_signal_sem);
+        if (sem_post (spool_signal_sem) == -1) {
+	    perror ("sem_post: spool_signal_sem"); exit (1);
+        }
+    
+        // Take a nap
+        sleep (1);
+    }
+}
