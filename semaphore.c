@@ -93,3 +93,19 @@ int main (int argc, char **argv)
 
     exit (0);
 }
+
+// producer: produce strings for printing
+// There might be multiple producer threads
+void *producer (void *arg)
+{
+    // Create 10 strings and terminate
+    int i;
+    int my_id = *((int *) arg);
+    int count = 0;
+
+    for (i = 0; i < 10; i++) {
+        // get a buffer: P (buffer_count_sem);
+        if (sem_wait (buffer_count_sem) == -1) {
+	    perror ("sem_wait: buffer_count_sem"); exit (1);
+        }
+ 
