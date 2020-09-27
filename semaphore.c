@@ -21,3 +21,6 @@ int buffer_index;
 int buffer_print_index;
 
 sem_t *mutex_sem, *buffer_count_sem, *spool_signal_sem;
+
+void *producer (void *arg);
+void *spooler (void *arg);
