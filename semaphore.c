@@ -59,3 +59,9 @@ int main (int argc, char **argv)
             fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
         }
     }
+ // Wait for producers to terminate
+    for (i = 0; i < 10; i++)
+        if ((r = pthread_join (tid_producer [i], NULL)) == -1) {
+            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
+        }
+    
