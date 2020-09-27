@@ -37,4 +37,7 @@ int main (int argc, char **argv)
     if ((mutex_sem = sem_open (SEM_MUTEX_NAME, O_CREAT, 0660, 1)) == SEM_FAILED) {
         perror ("sem_open"); exit (1);
     }
-    
+    // counting semaphore, indicating the number of available buffers. Initial value = MAX_BUFFERS
+    if ((buffer_count_sem = sem_open (SEM_BUFFER_COUNT_NAME, O_CREAT, 0660, MAX_BUFFERS)) == SEM_FAILED) {
+        perror ("sem_open"); exit (1);
+    }
