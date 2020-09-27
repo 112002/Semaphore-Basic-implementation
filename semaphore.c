@@ -138,3 +138,29 @@ void *producer (void *arg)
         sleep (1);
     }
 }
+// There is only one spooler thread
+void *spooler (void *arg)
+{
+
+    while (1) {  // forever
+        // Is there a string to print? P (spool_signal_sem);
+        if (sem_wait (spool_signal_sem) == -1) {
+	    perror ("sem_wait: spool_signal_sem"); exit (1);
+        }
+    
+        printf ("%s", buf [buffer_print_index]);
+
+        /* Since there is only one thread (spooler) using the 
+           buffer_print_index, mutex semaphore is not necessary */
+        buffer_print_index++;
+        if (buffer_print_index == MAX_BUFFERS)
+           buffer_print_index = 0;
+
+        /* Contents of one buffer has been printed.
+           One more buffer is available for use by producers.
+           Release buffer: V (buffer_count_sem);  */
+        if (sem_post (buffer_count_sem) == -1) {
+	    perror ("sem_post: buffer_count_sem"); exit (1);
+        }
+    }
+}
