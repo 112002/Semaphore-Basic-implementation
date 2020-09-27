@@ -109,3 +109,21 @@ void *producer (void *arg)
 	    perror ("sem_wait: buffer_count_sem"); exit (1);
         }
  
+/* There might be multiple producers. We must ensure that 
+            only one producer uses buffer_index at a time.  */
+        // P (mutex_sem);
+        if (sem_wait (mutex_sem) == -1) {
+	    perror ("sem_wait: mutex_sem"); exit (1);
+        }
+
+	    // Critical section
+            int j = buffer_index;
+            buffer_index++;
+            if (buffer_index == MAX_BUFFERS)
+                buffer_index = 0;
+
+        // Release mutex sem: V (mutex_sem)
+        if (sem_post (mutex_sem) == -1) {
+	    perror ("sem_post: mutex_sem"); exit (1);
+        }
+    
