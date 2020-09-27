@@ -24,3 +24,17 @@ sem_t *mutex_sem, *buffer_count_sem, *spool_signal_sem;
 
 void *producer (void *arg);
 void *spooler (void *arg);
+
+int main (int argc, char **argv)
+{
+    pthread_t tid_producer [10], tid_spooler;
+    int i, r;
+
+    // initialization
+    buffer_index = buffer_print_index = 0;
+
+    //  mutual exclusion semaphore, mutex_sem with an initial value 1.
+    if ((mutex_sem = sem_open (SEM_MUTEX_NAME, O_CREAT, 0660, 1)) == SEM_FAILED) {
+        perror ("sem_open"); exit (1);
+    }
+    
