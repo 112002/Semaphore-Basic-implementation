@@ -77,4 +77,19 @@ int main (int argc, char **argv)
     if ((r = pthread_cancel (tid_spooler)) != 0) {
         fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
     }
-    
+     // Remove semaphores
+
+    if (sem_unlink (SEM_MUTEX_NAME) == -1) {
+        perror ("sem_unlink"); exit (1);
+    }
+
+    if (sem_unlink (SEM_BUFFER_COUNT_NAME) == -1) {
+        perror ("sem_unlink"); exit (1);
+    }
+
+    if (sem_unlink (SEM_SPOOL_SIGNAL_NAME) == -1) {
+        perror ("sem_unlink"); exit (1);
+    }
+
+    exit (0);
+}
