@@ -41,3 +41,12 @@ int main (int argc, char **argv)
     if ((buffer_count_sem = sem_open (SEM_BUFFER_COUNT_NAME, O_CREAT, 0660, MAX_BUFFERS)) == SEM_FAILED) {
         perror ("sem_open"); exit (1);
     }
+ // counting semaphore, indicating the number of strings to be printed. Initial value = 0
+    if ((spool_signal_sem = sem_open (SEM_SPOOL_SIGNAL_NAME, O_CREAT, 0660, 0)) == SEM_FAILED) {
+        perror ("sem_open"); exit (1);
+    }
+
+    // Create spooler
+    if ((r = pthread_create (&tid_spooler, NULL, spooler, NULL)) != 0) {
+        fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
+    }
