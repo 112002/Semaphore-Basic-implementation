@@ -148,14 +148,13 @@ void *spooler (void *arg)
 	    perror ("sem_wait: spool_signal_sem"); exit (1);
         }
     
-        printf ("%s", buf [buffer_print_index]);
+  		  printf ("%s", buf [buffer_print_index]);
 
         /* Since there is only one thread (spooler) using the 
            buffer_print_index, mutex semaphore is not necessary */
         buffer_print_index++;
         if (buffer_print_index == MAX_BUFFERS)
            buffer_print_index = 0;
-
         /* Contents of one buffer has been printed.
            One more buffer is available for use by producers.
            Release buffer: V (buffer_count_sem);  */
